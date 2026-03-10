@@ -1,0 +1,363 @@
+{
+  "project": {
+    "name": "317 Lui Residence",
+    "subtitle": "Renovation Plan",
+    "updated": "2026-03-10"
+  },
+  "urgent": {
+    "title": "Water Damage Issue",
+    "items": [
+      "Heavy rains (week of 2/14) flooded extension flooring — water damage to LVP",
+      "**Patio needs to be sealed**",
+      "**Better outdoor water management needed**",
+      "Decision: Replace LVP with tiles for patio/extension area",
+      "Rain/drainage still needs to be moved to outside front"
+    ]
+  },
+  "actionItems": [
+    { "id": "action-0", "text": "Call Vicente — breaker box", "priority": true },
+    { "id": "action-1", "text": "Find patio ceiling material (slacked light oak — maybe Brea?)", "status": "needs ordering" },
+    { "id": "action-2", "text": "Vicente — get quote for concrete work" },
+    { "id": "action-3", "text": "Contact AC guy — 2 split units for patio area" },
+    { "id": "action-4", "text": "Assess water damage to extension flooring", "assess": { "id": "action-assess-0", "placeholder": "Document water damage findings, extent of damage, subfloor condition..." } },
+    { "id": "action-5", "text": "Improve outdoor water management" }
+  ],
+  "contractors": [
+    { "name": "Vicente", "color": "#2e7d9b", "description": "Lighting, electrical, patio, concrete, stucco, breaker box" },
+    { "name": "Jorge", "color": "#1a8a6e", "description": "Oak finishes, cabinets, island, pantry & living room shelves — Isabel coordinates" },
+    { "name": "AC Guy", "color": "#999", "description": "Need to contact — 2 split units for patio" }
+  ],
+  "rooms": [
+    {
+      "id": "kitchen",
+      "name": "Kitchen",
+      "icon": "🍳",
+      "iconBg": "#fef3e2",
+      "iconColor": "#d4880f",
+      "groups": [
+        {
+          "contractor": "Vicente",
+          "tag": "vicente",
+          "tasks": [
+            { "id": "k-v-0", "text": "Lighting installation (flank sides of hood)", "done": true },
+            { "id": "k-v-1", "text": "Coffee bar tile", "done": true },
+            { "id": "k-v-2", "text": "Island light", "status": "pending" },
+            { "id": "k-v-3", "text": "Painting — can be done later" }
+          ]
+        },
+        {
+          "contractor": "Jorge — Isabel following up",
+          "tag": "jorge",
+          "tasks": [
+            { "id": "k-j-0", "text": "Oak finishes", "status": "in progress" },
+            { "id": "k-j-1", "text": "Kitchen island finishing", "status": "looking good" },
+            { "id": "k-j-2", "text": "Cabinet boxes", "status": "looking good" },
+            { "id": "k-j-3", "text": "Faces on cabinet walls", "status": "in progress" },
+            { "id": "k-j-4", "text": "Assess current state", "assess": { "id": "kitchen-assess", "placeholder": "Note current condition of oak finishes, island, cabinets..." } }
+          ]
+        },
+        {
+          "contractor": "Isabel",
+          "tag": "isabel",
+          "tasks": [
+            { "id": "k-i-0", "text": "Pendant light" },
+            { "id": "k-i-1", "text": "Hardware — Jorge" },
+            { "id": "k-i-2", "text": "Fix dishwasher" },
+            { "id": "k-i-3", "text": "Trash can?" },
+            { "id": "k-i-4", "text": "LED lighting for undertoe + coffee bar" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pantry",
+      "name": "Pantry",
+      "icon": "🍶",
+      "iconBg": "#f0ebe3",
+      "iconColor": "#8b7355",
+      "groups": [
+        {
+          "contractor": "Jorge",
+          "tag": "jorge",
+          "tasks": [
+            { "id": "p-j-0", "text": "Custom shelving", "status": "pending" }
+          ]
+        },
+        {
+          "contractor": "Isabel",
+          "tag": "isabel",
+          "tasks": [
+            { "id": "p-i-0", "text": "Hardware" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bathroom",
+      "name": "Bathroom",
+      "icon": "🚿",
+      "iconBg": "#e8f4f8",
+      "iconColor": "#2e7d9b",
+      "groups": [
+        {
+          "contractor": "Vicente",
+          "tag": "vicente",
+          "tasks": [
+            { "id": "b-v-0", "text": "Bathroom cabinet", "status": "in progress" },
+            { "id": "b-v-1", "text": "Bathroom shelving" },
+            { "id": "b-v-2", "text": "Assess current state", "assess": { "id": "bathroom-assess", "placeholder": "Note cabinet progress, shelving measurements, any issues..." } }
+          ]
+        },
+        {
+          "contractor": "Isabel",
+          "tag": "isabel",
+          "tasks": [
+            { "id": "b-i-0", "text": "Install wallpaper" },
+            { "id": "b-i-1", "text": "Fix sink gold faucet" },
+            { "id": "b-i-2", "text": "Countertop for cabinets" },
+            { "id": "b-i-3", "text": "Hardware" },
+            { "id": "b-i-4", "text": "Sliding closet doors with tension rod or leave open with shelves" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "living",
+      "name": "Living Room",
+      "icon": "🛋",
+      "iconBg": "#f5f0e6",
+      "iconColor": "#a0845c",
+      "groups": [
+        {
+          "contractor": "Jorge",
+          "tag": "jorge",
+          "tasks": [
+            { "id": "l-j-0", "text": "Living room shelves", "status": "pending" }
+          ]
+        },
+        {
+          "contractor": "Isabel",
+          "tag": "isabel",
+          "tasks": [
+            { "id": "l-i-0", "text": "Hang up black rod French door + order curtains" },
+            { "id": "l-i-1", "text": "Living room light" },
+            { "id": "l-i-2", "text": "Sophia room light" },
+            { "id": "l-i-3", "text": "Fireplace" },
+            { "id": "l-i-4", "text": "Sophia wallpaper" }
+          ]
+        },
+        {
+          "contractor": "Switches — Whole House",
+          "tag": "general",
+          "tasks": [
+            { "id": "l-s-0", "text": "Assess all switches — all over the place", "assess": { "id": "switches-assess", "placeholder": "Document which switches are inconsistent, which rooms need reordering..." } },
+            { "id": "l-s-1", "text": "Decide if reordering for consistency is worth it" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dining",
+      "name": "Dining Room",
+      "icon": "🍷",
+      "iconBg": "#fef8ee",
+      "iconColor": "#c4960f",
+      "groups": [
+        {
+          "contractor": "Vicente",
+          "tag": "vicente",
+          "tasks": [
+            { "id": "d-v-0", "text": "Dining area lighting installation" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sophia",
+      "name": "Sophia's Room",
+      "icon": "🌸",
+      "iconBg": "#fce4ec",
+      "iconColor": "#d4548a",
+      "groups": [
+        {
+          "contractor": "Isabel",
+          "tag": "isabel",
+          "tasks": [
+            { "id": "s-i-0", "text": "Install closet door" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "foyer",
+      "name": "Foyer",
+      "icon": "🚪",
+      "iconBg": "#f0ebe3",
+      "iconColor": "#8b7355",
+      "groups": [
+        {
+          "contractor": "Isabel",
+          "tag": "isabel",
+          "tasks": [
+            { "id": "f-i-0", "text": "Paint Swiss coffee" },
+            { "id": "f-i-1", "text": "Move hanging rack" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "closets",
+      "name": "Closets",
+      "icon": "👔",
+      "iconBg": "#f0f0f0",
+      "iconColor": "#777",
+      "groups": [
+        {
+          "contractor": "Isabel",
+          "tag": "isabel",
+          "tasks": [
+            { "id": "c-i-0", "text": "Demo hallway closet + remove everything" },
+            { "id": "c-i-1", "text": "Demo closet across bathroom" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "patio-in",
+      "name": "Patio — Inside Addition",
+      "icon": "🌱",
+      "iconBg": "#e8f5e9",
+      "iconColor": "#4caf50",
+      "groups": [
+        {
+          "contractor": "General",
+          "tag": "general",
+          "tasks": [
+            { "id": "pi-0", "text": "Ceiling — insulation" },
+            { "id": "pi-1", "text": "Ceiling — cover material (slacked light oak)", "status": "needs ordering" },
+            { "id": "pi-2", "text": "Lighting installation" },
+            { "id": "pi-3", "text": "AC split unit #1 (contact AC guy)" },
+            { "id": "pi-4", "text": "AC split unit #2 (contact AC guy)" }
+          ]
+        },
+        {
+          "contractor": "Isabel",
+          "tag": "isabel",
+          "tasks": [
+            { "id": "pi-i-0", "text": "Hang curtains" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "patio-out",
+      "name": "Patio — Outside",
+      "icon": "☀",
+      "iconBg": "#fff3e0",
+      "iconColor": "#ff9800",
+      "groups": [
+        {
+          "contractor": "Vicente",
+          "tag": "vicente",
+          "tasks": [
+            { "id": "po-0", "text": "Patio needs to be sealed", "bold": true },
+            { "id": "po-1", "text": "Improve outdoor water management" },
+            { "id": "po-2", "text": "Patio ground — concrete" },
+            { "id": "po-3", "text": "Smooth stucco — other side of kitchen" },
+            { "id": "po-4", "text": "Cap clean out for plumbing" },
+            { "id": "po-5", "text": "Window patio sealant trim" },
+            { "id": "po-6", "text": "Gutters work" },
+            { "id": "po-7", "text": "Move rain/drainage to outside front" },
+            { "id": "po-8", "text": "Retaining wall — stones filled with concrete + lip on top" },
+            { "id": "po-9", "text": "Patio assessment", "assess": { "id": "patio-assess", "placeholder": "Document patio condition, sealing needs, drainage issues, concrete state..." } }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "patio-floor",
+      "name": "Patio / Extension Flooring",
+      "icon": "▪",
+      "iconBg": "#efebe9",
+      "iconColor": "#795548",
+      "groups": [
+        {
+          "contractor": null,
+          "tasks": [
+            { "id": "pf-0", "text": "Replace LVP flooring — order from MSI", "status": "needs ordering" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whole",
+      "name": "Whole House",
+      "icon": "🏠",
+      "iconBg": "#e8eaf6",
+      "iconColor": "#5c6bc0",
+      "groups": [
+        {
+          "contractor": null,
+          "tasks": [
+            { "id": "w-0", "text": "Molding — caulk and paint" },
+            { "id": "w-1", "text": "Holes for ceiling speakers" },
+            { "id": "w-2", "text": "Speakers insert (dusty work)" }
+          ]
+        }
+      ]
+    }
+  ],
+  "isabelToDo": {
+    "id": "isabel",
+    "name": "Isabel — Shopping & Ordering",
+    "icon": "📋",
+    "tasks": [
+      { "id": "isa-0", "text": "Find black rods" },
+      { "id": "isa-1", "text": "Order curtains for living room" },
+      { "id": "isa-2", "text": "Order closet door for Sophia's room" }
+    ]
+  },
+  "phaseB": {
+    "id": "phaseb",
+    "name": "Phase B — Final",
+    "icon": "🎯",
+    "groups": [
+      {
+        "label": "Finishing",
+        "tasks": [
+          { "id": "pb-0", "text": "Patch up window work" },
+          { "id": "pb-1", "text": "Final wall touch-ups" },
+          { "id": "pb-2", "text": "Put back items" },
+          { "id": "pb-3", "text": "Sophia area back up" }
+        ]
+      },
+      {
+        "label": "Laundry Machine Upstairs",
+        "tasks": [
+          { "id": "pb-4", "text": "Water hookup" },
+          { "id": "pb-5", "text": "Electric hookup" },
+          { "id": "pb-6", "text": "Draining" }
+        ]
+      }
+    ]
+  },
+  "laterProject": {
+    "id": "later",
+    "name": "Later — French Door + Fencing",
+    "note": "After roofing + county inspection — Contact Eric @ Santa Ana Lumber",
+    "tasks": [
+      { "id": "lt-0", "text": "Fencing — 4x4 posts + braces + Red Grandis slats" },
+      { "id": "lt-1", "text": "French door installation (garage into living room)" }
+    ]
+  },
+  "completed": [
+    "Sink hole", "Fridge water line", "Dishwasher confirmed", "Island sides",
+    "TV set up", "Bathroom working", "Fridge delivered", "Jan 3 bday cleanup",
+    "Roof sealed", "Living room cleaned", "Things to garage", "Coffee bar set up",
+    "Switches installed", "Speakers wiring", "Speaker receiver", "Speakers moved",
+    "Walls primed", "Walls painted", "Pomona invoice paid", "Windows — dining",
+    "Windows — living", "Range hood build", "Coffee bar lighting", "Arches build",
+    "Patio roof sealer", "Patio roof rainproof", "Old fridge removed",
+    "Hood lighting", "Coffee bar tile", "Dusty work prep", "Hallway", "Payments"
+  ]
+}

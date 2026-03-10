@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>317 Lui Residence — Renovation Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --oak: #b8956a;
+    --oak-light: #d4b896;
+    --oak-pale: #f0e6d8;
+    --oak-wash: #faf6f1;
+    --bark: #5c3d2e;
+    --bark-deep: #3a2518;
+    --cream: #fdfaf5;
+    --sand: #e8ddd0;
+    --urgent-red: #c0392b;
+    --urgent-bg: #fdf0ee;
+    --urgent-border: #e8a89e;
+    --assess-amber: #d4880f;
+    --assess-bg: #fef9ee;
+    --assess-border: #e8d4a0;
+    --done-green: #27ae60;
+    --done-bg: #edf9f0;
+    --isabel-purple: #7c5cbf;
+    --isabel-bg: #f5f0ff;
+    --vicente-blue: #2e7d9b;
+    --jorge-teal: #1a8a6e;
+    --shadow-sm: 0 1px 3px rgba(92,61,46,0.06);
+    --shadow-md: 0 4px 16px rgba(92,61,46,0.08);
+    --shadow-lg: 0 8px 32px rgba(92,61,46,0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--bark-deep);
+    line-height: 1.6;
+    font-weight: 400;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 24px 20px 80px; }
+
+  .header { text-align: center; padding: 48px 0 40px; border-bottom: 1px solid var(--sand); margin-bottom: 32px; position: relative; }
+  .header::after { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--oak); border-radius: 2px; }
+  .header h1 { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--bark-deep); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .header .subtitle { font-size: 0.85rem; color: var(--oak); font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; }
+  .header .date { font-size: 0.8rem; color: #998877; margin-top: 6px; }
+
+  .progress-bar-wrap { background: var(--sand); border-radius: 20px; height: 8px; margin: 24px auto 0; max-width: 320px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--oak), var(--oak-light)); border-radius: 20px; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+  .progress-label { font-size: 0.75rem; color: #998877; margin-top: 8px; text-align: center; }
+
+  .urgent-banner { background: var(--urgent-bg); border: 1px solid var(--urgent-border); border-left: 4px solid var(--urgent-red); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 24px; animation: fadeSlideIn 0.5s ease; }
+  .urgent-banner h2 { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--urgent-red); font-weight: 400; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .urgent-banner ul { list-style: none; font-size: 0.88rem; color: #6b3a30; }
+  .urgent-banner li { padding: 4px 0; padding-left: 18px; position: relative; }
+  .urgent-banner li::before { content: '—'; position: absolute; left: 0; color: var(--urgent-red); opacity: 0.5; }
+
+  .section { background: white; border: 1px solid var(--sand); border-radius: var(--radius); margin-bottom: 16px; box-shadow: var(--shadow-sm); overflow: hidden; transition: box-shadow 0.3s ease; animation: fadeSlideIn 0.4s ease both; }
+  .section:hover { box-shadow: var(--shadow-md); }
+  .section-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; user-select: none; transition: background 0.2s ease; }
+  .section-header:hover { background: var(--oak-wash); }
+  .section-header h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem; font-weight: 400; color: var(--bark-deep); display: flex; align-items: center; gap: 10px; }
+  .section-header .room-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; }
+  .section-header .chevron { width: 20px; height: 20px; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); color: var(--oak); flex-shrink: 0; }
+  .section.collapsed .chevron { transform: rotate(-90deg); }
+  .section-body { padding: 0 20px 20px; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, padding 0.3s ease; max-height: 3000px; opacity: 1; }
+  .section.collapsed .section-body { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; }
+  .section-count { font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 600; background: var(--oak-pale); color: var(--oak); padding: 2px 8px; border-radius: 10px; margin-left: auto; margin-right: 12px; }
+
+  .contractor-group { margin-bottom: 16px; }
+  .contractor-group:last-child { margin-bottom: 0; }
+  .contractor-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 10px; border-radius: 6px; margin-bottom: 10px; }
+  .tag-vicente { background: #e8f4f8; color: var(--vicente-blue); }
+  .tag-jorge { background: #e6f5f0; color: var(--jorge-teal); }
+  .tag-isabel { background: var(--isabel-bg); color: var(--isabel-purple); }
+  .tag-general { background: var(--oak-pale); color: var(--oak); }
+
+  .task { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f5f0ea; font-size: 0.88rem; transition: opacity 0.3s ease; }
+  .task:last-child { border-bottom: none; }
+  .task.done { opacity: 0.45; }
+  .task.done .task-label { text-decoration: line-through; text-decoration-color: var(--oak-light); }
+  .task input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 2px solid var(--sand); border-radius: 5px; cursor: pointer; flex-shrink: 0; margin-top: 2px; transition: all 0.2s ease; position: relative; }
+  .task input[type="checkbox"]:hover { border-color: var(--oak); }
+  .task input[type="checkbox"]:checked { background: var(--done-green); border-color: var(--done-green); }
+  .task input[type="checkbox"]:checked::after { content: '\2713'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 11px; font-weight: 700; }
+  .task-label { flex: 1; color: var(--bark); }
+  .task-label .status { font-size: 0.75rem; font-weight: 500; padding: 1px 7px; border-radius: 4px; margin-left: 6px; }
+  .status-progress { background: #fff3e0; color: #e67e22; }
+  .status-pending { background: #f0f0f0; color: #888; }
+  .status-order { background: #e3f2fd; color: #1976d2; }
+
+  .assess-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; color: var(--assess-amber); background: var(--assess-bg); border: 1px solid var(--assess-border); padding: 2px 8px; border-radius: 5px; margin-left: 6px; cursor: pointer; transition: all 0.2s ease; }
+  .assess-badge:hover { background: #fdf0d5; }
+  .assess-area { margin: 8px 0 4px 28px; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; }
+  .assess-area.hidden { max-height: 0; opacity: 0; }
+  .assess-area.visible { max-height: 400px; opacity: 1; }
+  .assess-area textarea { width: 100%; min-height: 80px; padding: 12px 14px; border: 1px solid var(--assess-border); border-radius: var(--radius-sm); background: var(--assess-bg); font-family: 'DM Sans', sans-serif; font-size: 0.84rem; color: var(--bark); resize: vertical; outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+  .assess-area textarea::placeholder { color: #c4a86e; }
+  .assess-area textarea:focus { border-color: var(--assess-amber); box-shadow: 0 0 0 3px rgba(212,136,15,0.1); }
+  .assess-label { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 500; color: var(--assess-amber); margin-bottom: 6px; }
+
+  .action-items { background: linear-gradient(135deg, var(--bark-deep) 0%, #4a3020 100%); border-radius: var(--radius); padding: 24px; margin-bottom: 24px; color: var(--oak-pale); box-shadow: var(--shadow-lg); }
+  .action-items h2 { font-family: 'DM Serif Display', serif; font-size: 1.15rem; font-weight: 400; color: var(--oak-light); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .action-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(184,149,106,0.15); font-size: 0.88rem; }
+  .action-item:last-child { border-bottom: none; }
+  .action-item input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 2px solid rgba(184,149,106,0.4); border-radius: 5px; cursor: pointer; flex-shrink: 0; margin-top: 2px; transition: all 0.2s ease; position: relative; background: transparent; }
+  .action-item input[type="checkbox"]:checked { background: var(--done-green); border-color: var(--done-green); }
+  .action-item input[type="checkbox"]:checked::after { content: '\2713'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 11px; font-weight: 700; }
+  .action-item.done-action { opacity: 0.35; text-decoration: line-through; text-decoration-color: rgba(184,149,106,0.4); }
+  .priority-flag { display: inline-flex; align-items: center; gap: 4px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #ff6b6b; background: rgba(255,107,107,0.15); padding: 2px 8px; border-radius: 4px; margin-right: 6px; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+  .contractors-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .contractor-card { background: white; border: 1px solid var(--sand); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow-sm); }
+  .contractor-card h4 { font-family: 'DM Serif Display', serif; font-size: 0.95rem; font-weight: 400; margin-bottom: 4px; }
+  .contractor-card p { font-size: 0.78rem; color: #998877; line-height: 1.5; }
+  .contractor-card .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+
+  .completed-section { background: var(--oak-wash); border: 1px solid var(--sand); }
+  .completed-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+  .completed-chip { font-size: 0.75rem; color: var(--done-green); background: var(--done-bg); border: 1px solid #c8ecd0; padding: 3px 10px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+  .completed-chip::before { content: '\2713'; font-size: 0.65rem; font-weight: 700; }
+
+  .isabel-section { border-left: 4px solid var(--isabel-purple); }
+  .isabel-section .section-header h3 { color: var(--isabel-purple); }
+
+  .later-section { opacity: 0.7; border-style: dashed; }
+  .later-section:hover { opacity: 1; }
+  .on-hold-tag { font-size: 0.7rem; font-weight: 600; color: #999; background: #f0f0f0; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 640px) {
+    .container { padding: 16px 14px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 1.7rem; }
+    .action-items { padding: 18px; }
+    .section-header { padding: 14px 16px; }
+    .section-body { padding: 0 16px 16px; }
+    .contractors-bar { grid-template-columns: 1fr; }
+    .section-header h3 { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1 id="projName"></h1>
+    <div class="subtitle" id="projSubtitle"></div>
+    <div class="date" id="projDate"></div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+    <div class="progress-label" id="progressLabel">Loading...</div>
+  </div>
+  <div id="urgentBanner"></div>
+  <div id="actionItemsEl"></div>
+  <div class="contractors-bar" id="contractorsBar"></div>
+  <div id="roomsEl"></div>
+</div>
+
+<script>
+const STORAGE_KEY = '317-lui-renovation';
+let DATA = null;
+
+function getState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+}
+
+function saveState() {
+  const state = { checks: {}, notes: {}, collapsed: {} };
+  document.querySelectorAll('[data-task-id] input[type="checkbox"]:not([disabled])').forEach(cb => {
+    state.checks[cb.closest('[data-task-id]').dataset.taskId] = cb.checked;
+  });
+  document.querySelectorAll('.assess-area textarea').forEach(ta => {
+    state.notes[ta.dataset.key] = ta.value;
+  });
+  document.querySelectorAll('.section[data-room]').forEach(s => {
+    state.collapsed[s.dataset.room] = s.classList.contains('collapsed');
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  updateUI();
+}
+
+function updateUI() {
+  document.querySelectorAll('.task[data-task-id]').forEach(t => {
+    const cb = t.querySelector('input[type="checkbox"]');
+    if (cb && !cb.disabled) t.classList.toggle('done', cb.checked);
+  });
+  document.querySelectorAll('.action-item[data-task-id]').forEach(t => {
+    const cb = t.querySelector('input[type="checkbox"]');
+    if (cb) t.classList.toggle('done-action', cb.checked);
+  });
+  const all = document.querySelectorAll('.task input[type="checkbox"]');
+  const done = document.querySelectorAll('.task input[type="checkbox"]:checked');
+  const pct = all.length > 0 ? Math.round((done.length / all.length) * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${done.length} of ${all.length} tasks complete (${pct}%)`;
+  document.querySelectorAll('.section[data-room]').forEach(s => {
+    const room = s.dataset.room;
+    if (room === 'completed') return;
+    const tasks = s.querySelectorAll('.task input[type="checkbox"]:not([disabled])');
+    const checked = s.querySelectorAll('.task input[type="checkbox"]:not([disabled]):checked');
+    const countEl = s.querySelector('.section-count');
+    if (countEl && tasks.length > 0) countEl.textContent = `${checked.length}/${tasks.length}`;
+  });
+}
+
+function toggleSection(header) {
+  header.closest('.section').classList.toggle('collapsed');
+  saveState();
+}
+
+function toggleAssess(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('hidden');
+  el.classList.toggle('visible');
+  if (el.classList.contains('visible')) {
+    const ta = el.querySelector('textarea');
+    if (ta) setTimeout(() => ta.focus(), 100);
+  }
+}
+
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function statusClass(s) {
+  if (!s) return '';
+  const sl = s.toLowerCase();
+  if (sl.includes('progress') || sl.includes('looking good')) return 'status-progress';
+  if (sl.includes('pending')) return 'status-pending';
+  if (sl.includes('order')) return 'status-order';
+  return 'status-pending';
+}
+
+function renderTask(task, isAction) {
+  const cls = isAction ? 'action-item' : 'task';
+  const isDone = task.done === true;
+  const doneClass = isDone && !isAction ? ' done' : '';
+  let html = `<div class="${cls}${doneClass}" data-task-id="${task.id}">`;
+  html += `<input type="checkbox" ${isDone ? 'checked disabled' : 'onchange="saveState()"'}>`;
+  html += `<span class="task-label">`;
+  if (task.priority) html += `<span class="priority-flag">Priority</span>`;
+  if (task.bold) html += `<strong>${esc(task.text)}</strong>`;
+  else html += esc(task.text);
+  if (task.status) html += ` <span class="status ${statusClass(task.status)}">${esc(task.status)}</span>`;
+  if (task.assess) html += ` <span class="assess-badge" onclick="event.stopPropagation();toggleAssess('${task.assess.id}')">&#9998; Notes</span>`;
+  html += `</span></div>`;
+  if (task.assess) {
+    html += `<div class="assess-area hidden" id="${task.assess.id}">`;
+    html += `<div class="assess-label">&#128270; Assessment Notes</div>`;
+    html += `<textarea placeholder="${esc(task.assess.placeholder)}" data-key="${task.assess.id}" oninput="saveState()"></textarea>`;
+    html += `</div>`;
+  }
+  return html;
+}
+
+function render(data) {
+  // Header
+  document.getElementById('projName').textContent = data.project.name;
+  document.getElementById('projSubtitle').textContent = data.project.subtitle;
+  document.getElementById('projDate').textContent = `Updated ${data.project.updated}`;
+
+  // Urgent
+  let urgHtml = `<div class="urgent-banner"><h2>&#9888; ${esc(data.urgent.title)}</h2><ul>`;
+  data.urgent.items.forEach(item => {
+    const rendered = item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    urgHtml += `<li>${rendered}</li>`;
+  });
+  urgHtml += '</ul></div>';
+  document.getElementById('urgentBanner').innerHTML = urgHtml;
+
+  // Action Items
+  let actHtml = `<div class="action-items"><h2>&#9889; Action Items This Week</h2>`;
+  data.actionItems.forEach(t => { actHtml += renderTask(t, true); });
+  actHtml += '</div>';
+  document.getElementById('actionItemsEl').innerHTML = actHtml;
+
+  // Contractors
+  let conHtml = '';
+  data.contractors.forEach(c => {
+    conHtml += `<div class="contractor-card"><h4><span class="dot" style="background:${c.color}"></span>${esc(c.name)}</h4><p>${esc(c.description)}</p></div>`;
+  });
+  document.getElementById('contractorsBar').innerHTML = conHtml;
+
+  // Rooms
+  let roomHtml = '';
+  data.rooms.forEach((room, i) => {
+    roomHtml += `<div class="section" data-room="${room.id}" style="animation-delay:${i * 0.05}s">`;
+    roomHtml += `<div class="section-header" onclick="toggleSection(this)">`;
+    roomHtml += `<h3><span class="room-icon" style="background:${room.iconBg};color:${room.iconColor};">${room.icon}</span>${esc(room.name)}</h3>`;
+    roomHtml += `<span class="section-count"></span>`;
+    roomHtml += `<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>`;
+    roomHtml += `</div><div class="section-body">`;
+    room.groups.forEach(g => {
+      roomHtml += `<div class="contractor-group">`;
+      if (g.contractor) {
+        const tag = g.tag || 'general';
+        roomHtml += `<div class="contractor-tag tag-${tag}">${esc(g.contractor)}</div>`;
+      }
+      g.tasks.forEach(t => { roomHtml += renderTask(t, false); });
+      roomHtml += `</div>`;
+    });
+    roomHtml += `</div></div>`;
+  });
+
+  // Isabel To Do
+  const isa = data.isabelToDo;
+  roomHtml += `<div class="section isabel-section" data-room="${isa.id}">`;
+  roomHtml += `<div class="section-header" onclick="toggleSection(this)">`;
+  roomHtml += `<h3><span class="room-icon" style="background:var(--isabel-bg);color:var(--isabel-purple);">${isa.icon}</span>${esc(isa.name)}</h3>`;
+  roomHtml += `<span class="section-count"></span>`;
+  roomHtml += `<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>`;
+  roomHtml += `</div><div class="section-body"><div class="contractor-group">`;
+  isa.tasks.forEach(t => { roomHtml += renderTask(t, false); });
+  roomHtml += `</div></div></div>`;
+
+  // Phase B
+  const pb = data.phaseB;
+  roomHtml += `<div class="section" data-room="${pb.id}">`;
+  roomHtml += `<div class="section-header" onclick="toggleSection(this)">`;
+  roomHtml += `<h3><span class="room-icon" style="background:#f3e5f5;color:#9c27b0;">${pb.icon}</span>${esc(pb.name)}</h3>`;
+  roomHtml += `<span class="section-count"></span>`;
+  roomHtml += `<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>`;
+  roomHtml += `</div><div class="section-body">`;
+  pb.groups.forEach(g => {
+    roomHtml += `<div class="contractor-group"><div class="contractor-tag tag-general">${esc(g.label)}</div>`;
+    g.tasks.forEach(t => { roomHtml += renderTask(t, false); });
+    roomHtml += `</div>`;
+  });
+  roomHtml += `</div></div>`;
+
+  // Later
+  const lt = data.laterProject;
+  roomHtml += `<div class="section later-section" data-room="${lt.id}">`;
+  roomHtml += `<div class="section-header" onclick="toggleSection(this)">`;
+  roomHtml += `<h3><span class="room-icon" style="background:#f5f5f5;color:#999;">&#128338;</span>${esc(lt.name)} <span class="on-hold-tag">On Hold</span></h3>`;
+  roomHtml += `<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>`;
+  roomHtml += `</div><div class="section-body">`;
+  roomHtml += `<p style="font-size:0.8rem;color:#999;margin-bottom:12px;">${esc(lt.note)}</p>`;
+  roomHtml += `<div class="contractor-group">`;
+  lt.tasks.forEach(t => { roomHtml += renderTask(t, false); });
+  roomHtml += `</div></div></div>`;
+
+  // Completed
+  roomHtml += `<div class="section completed-section collapsed" data-room="completed">`;
+  roomHtml += `<div class="section-header" onclick="toggleSection(this)">`;
+  roomHtml += `<h3><span class="room-icon" style="background:var(--done-bg);color:var(--done-green);">&#10003;</span>Completed</h3>`;
+  roomHtml += `<span class="section-count" style="background:var(--done-bg);color:var(--done-green);">${data.completed.length} done</span>`;
+  roomHtml += `<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>`;
+  roomHtml += `</div><div class="section-body"><div class="completed-grid">`;
+  data.completed.forEach(c => { roomHtml += `<span class="completed-chip">${esc(c)}</span>`; });
+  roomHtml += `</div></div></div>`;
+
+  document.getElementById('roomsEl').innerHTML = roomHtml;
+
+  // Restore state
+  const state = getState();
+  if (state.checks) {
+    document.querySelectorAll('[data-task-id] input[type="checkbox"]:not([disabled])').forEach(cb => {
+      const id = cb.closest('[data-task-id]').dataset.taskId;
+      if (state.checks[id] !== undefined) cb.checked = state.checks[id];
+    });
+  }
+  if (state.notes) {
+    document.querySelectorAll('.assess-area textarea').forEach(ta => {
+      const key = ta.dataset.key;
+      if (key && state.notes[key]) {
+        ta.value = state.notes[key];
+        ta.closest('.assess-area').classList.remove('hidden');
+        ta.closest('.assess-area').classList.add('visible');
+      }
+    });
+  }
+  if (state.collapsed) {
+    document.querySelectorAll('.section[data-room]').forEach(s => {
+      const room = s.dataset.room;
+      if (room && state.collapsed[room] !== undefined) {
+        s.classList.toggle('collapsed', state.collapsed[room]);
+      }
+    });
+  }
+  updateUI();
+}
+
+// Load data
+fetch('data.json')
+  .then(r => r.json())
+  .then(data => { DATA = data; render(data); })
+  .catch(err => {
+    document.getElementById('roomsEl').innerHTML = `<p style="color:var(--urgent-red);padding:20px;">Error loading data.json: ${err.message}</p>`;
+  });
+</script>
+</body>
+</html>
