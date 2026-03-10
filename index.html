@@ -171,26 +171,46 @@
   <div id="roomsEl"></div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script>
-const STORAGE_KEY = '317-lui-renovation';
-let DATA = null;
+// Firebase setup
+firebase.initializeApp({
+  apiKey: "AIzaSyBh-YchsxUnPaxdfFVde9EvPoChYjkB8zU",
+  authDomain: "renovs.firebaseapp.com",
+  databaseURL: "https://renovs-default-rtdb.firebaseio.com",
+  projectId: "renovs",
+  storageBucket: "renovs.firebasestorage.app",
+  messagingSenderId: "688236124007",
+  appId: "1:688236124007:web:2a16b5b8f559b34c0d41c2"
+});
+const db = firebase.database();
+let syncing = false; // prevent save loops during Firebase updates
 
-function getState() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+function getLocalCollapsed() {
+  try { return JSON.parse(localStorage.getItem('317-collapsed')) || {}; } catch { return {}; }
+}
+function saveLocalCollapsed() {
+  const collapsed = {};
+  document.querySelectorAll('.section[data-room]').forEach(s => {
+    collapsed[s.dataset.room] = s.classList.contains('collapsed');
+  });
+  localStorage.setItem('317-collapsed', JSON.stringify(collapsed));
 }
 
 function saveState() {
-  const state = { checks: {}, notes: {}, collapsed: {} };
+  if (syncing) return;
+  const state = { checks: {}, notes: {} };
   document.querySelectorAll('[data-task-id] input[type="checkbox"]:not([disabled])').forEach(cb => {
     state.checks[cb.closest('[data-task-id]').dataset.taskId] = cb.checked;
   });
   document.querySelectorAll('.assess-area textarea').forEach(ta => {
     state.notes[ta.dataset.key] = ta.value;
   });
-  document.querySelectorAll('.section[data-room]').forEach(s => {
-    state.collapsed[s.dataset.room] = s.classList.contains('collapsed');
-  });
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  // Save to Firebase (shared across all devices)
+  db.ref('state').set(state);
+  // Save collapsed locally (per device preference)
+  saveLocalCollapsed();
   updateUI();
 }
 
@@ -370,33 +390,40 @@ function render(data) {
 
   document.getElementById('roomsEl').innerHTML = roomHtml;
 
-  // Restore state
-  const state = getState();
-  if (state.checks) {
-    document.querySelectorAll('[data-task-id] input[type="checkbox"]:not([disabled])').forEach(cb => {
-      const id = cb.closest('[data-task-id]').dataset.taskId;
-      if (state.checks[id] !== undefined) cb.checked = state.checks[id];
-    });
-  }
-  if (state.notes) {
-    document.querySelectorAll('.assess-area textarea').forEach(ta => {
-      const key = ta.dataset.key;
-      if (key && state.notes[key]) {
-        ta.value = state.notes[key];
-        ta.closest('.assess-area').classList.remove('hidden');
-        ta.closest('.assess-area').classList.add('visible');
-      }
-    });
-  }
-  if (state.collapsed) {
-    document.querySelectorAll('.section[data-room]').forEach(s => {
-      const room = s.dataset.room;
-      if (room && state.collapsed[room] !== undefined) {
-        s.classList.toggle('collapsed', state.collapsed[room]);
-      }
-    });
-  }
-  updateUI();
+  // Restore collapsed state (local per device)
+  const collapsed = getLocalCollapsed();
+  document.querySelectorAll('.section[data-room]').forEach(s => {
+    const room = s.dataset.room;
+    if (room && collapsed[room] !== undefined) {
+      s.classList.toggle('collapsed', collapsed[room]);
+    }
+  });
+
+  // Listen for real-time Firebase updates (shared state)
+  db.ref('state').on('value', (snapshot) => {
+    const state = snapshot.val() || {};
+    syncing = true;
+    if (state.checks) {
+      document.querySelectorAll('[data-task-id] input[type="checkbox"]:not([disabled])').forEach(cb => {
+        const id = cb.closest('[data-task-id]').dataset.taskId;
+        if (state.checks[id] !== undefined) cb.checked = state.checks[id];
+      });
+    }
+    if (state.notes) {
+      document.querySelectorAll('.assess-area textarea').forEach(ta => {
+        const key = ta.dataset.key;
+        if (key && state.notes[key] !== undefined) {
+          ta.value = state.notes[key];
+          if (state.notes[key]) {
+            ta.closest('.assess-area').classList.remove('hidden');
+            ta.closest('.assess-area').classList.add('visible');
+          }
+        }
+      });
+    }
+    syncing = false;
+    updateUI();
+  });
 }
 
 // Load data
